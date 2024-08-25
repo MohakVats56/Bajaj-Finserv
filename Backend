@@ -1,0 +1,37 @@
+const express = require('express');
+const app = express();
+app.use(express.json());
+
+app.post('/bfhl', (req, res) => {
+    const { data } = req.body;
+    let numbers = [];
+    let alphabets = [];
+    let highestLowercase = '';
+
+    data.forEach(item => {
+        if (!isNaN(item)) {
+            numbers.push(item);
+        } else if (isNaN(item)) {
+            alphabets.push(item);
+            if (item === item.toLowerCase() && (!highestLowercase || item > highestLowercase)) {
+                highestLowercase = item;
+            }
+        }
+    });
+
+    res.json({
+        is_success: true,
+        user_id: "john_doe_17091999",
+        email: "john@xyz.com",
+        roll_number: "ABCD123",
+        numbers,
+        alphabets,
+        highest_lowercase_alphabet: highestLowercase ? [highestLowercase] : []
+    });
+});
+
+app.get('/bfhl', (req, res) => {
+    res.status(200).json({ operation_code: 1 });
+});
+
+app.listen(3000, () => console.log('Server running on port 3000'));
